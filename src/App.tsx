@@ -90,6 +90,7 @@ import ToolsPanel from "@/components/openclaw/ToolsPanel";
 import AgentsDefaultsPanel from "@/components/openclaw/AgentsDefaultsPanel";
 import OpenClawHealthBanner from "@/components/openclaw/OpenClawHealthBanner";
 import HermesMemoryPanel from "@/components/hermes/HermesMemoryPanel";
+import { SetupGate } from "@/components/setup/SetupGate";
 
 type View =
   | "providers"
@@ -1001,7 +1002,7 @@ function App() {
     );
   };
 
-  return (
+  const appContent = (
     <div
       className="flex flex-col h-screen overflow-hidden bg-background text-foreground selection:bg-primary/30 pb-4"
       style={{ overflowX: "hidden", paddingTop: contentTopOffset }}
@@ -1599,6 +1600,8 @@ function App() {
       <FirstRunNoticeDialog />
     </div>
   );
+
+  return <SetupGate>{appContent}</SetupGate>;
 }
 
 export default App;

@@ -9,6 +9,7 @@ import {
   ScrollText,
   HardDriveDownload,
   FlaskConical,
+  Wrench,
 } from "lucide-react";
 import { toast } from "sonner";
 import {
@@ -47,6 +48,7 @@ import { AuthCenterPanel } from "@/components/settings/AuthCenterPanel";
 import { useInstalledSkills } from "@/hooks/useSkills";
 import { useSettings } from "@/hooks/useSettings";
 import { useImportExport } from "@/hooks/useImportExport";
+import { useReEnterWizard } from "@/components/setup/SetupGate";
 import { useTranslation } from "react-i18next";
 import type { SettingsFormState } from "@/hooks/useSettings";
 
@@ -251,6 +253,7 @@ export function SettingsPage({
                         handleAutoSave({ preferredTerminal: terminal })
                       }
                     />
+                    <SetupWizardEntry />
                   </motion.div>
                 ) : null}
               </TabsContent>
@@ -529,6 +532,28 @@ export function SettingsPage({
           </DialogFooter>
         </DialogContent>
       </Dialog>
+    </div>
+  );
+}
+
+function SetupWizardEntry() {
+  const { t } = useTranslation();
+  const reEnterWizard = useReEnterWizard();
+
+  return (
+    <div className="glass-card rounded-lg p-4 space-y-2">
+      <div className="flex items-center gap-2">
+        <Wrench className="w-4 h-4 text-muted-foreground" />
+        <span className="text-sm font-medium">
+          {t("setup.wizard.reEntry")}
+        </span>
+      </div>
+      <p className="text-xs text-muted-foreground">
+        {t("setup.wizard.reEntryDescription")}
+      </p>
+      <Button variant="outline" size="sm" onClick={reEnterWizard}>
+        {t("setup.wizard.reEntry")}
+      </Button>
     </div>
   );
 }

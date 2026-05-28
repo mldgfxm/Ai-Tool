@@ -1284,6 +1284,14 @@ pub fn run() {
             commands::get_tool_versions,
             commands::run_tool_lifecycle_action,
             commands::probe_tool_installations,
+            // Setup wizard
+            commands::get_setup_status,
+            commands::check_verification_status,
+            commands::verify_code,
+            commands::mark_setup_completed,
+            commands::reset_setup_wizard,
+            commands::check_dependencies,
+            commands::install_dependencies,
             // Provider terminal
             commands::open_provider_terminal,
             // Universal Provider management

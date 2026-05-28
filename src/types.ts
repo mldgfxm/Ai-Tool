@@ -341,6 +341,10 @@ export interface Settings {
   autoSyncConfirmed?: boolean;
   // User has confirmed the common config first-run notice
   commonConfigConfirmed?: boolean;
+  // User has passed the verification code screen
+  setupVerified?: boolean;
+  // User has completed the setup wizard
+  setupWizardCompleted?: boolean;
   // 首选语言（可选，默认中文）
   language?: "en" | "zh" | "zh-TW" | "ja";
 

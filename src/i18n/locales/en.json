@@ -2685,5 +2685,36 @@
     "expiredHint": "Run the {{tool}} command to refresh your login",
     "queryFailed": "Query failed",
     "refresh": "Refresh"
+  },
+  "setup": {
+    "verification": {
+      "title": "Enter Verification Code",
+      "description": "Enter the verification code to continue",
+      "placeholder": "Enter code",
+      "submit": "Verify",
+      "error": "Incorrect code. Please try again."
+    },
+    "wizard": {
+      "title": "Environment Setup",
+      "stepDependencies": "Dependencies",
+      "stepComplete": "Setup Complete",
+      "next": "Next",
+      "back": "Back",
+      "skip": "Skip",
+      "finish": "Get Started",
+      "install": "Install",
+      "installSelected": "Install Selected",
+      "installing": "Installing...",
+      "installed": "Installed",
+      "notInstalled": "Not installed",
+      "version": "Version",
+      "checkDependencies": "Checking dependencies...",
+      "selectAll": "Select All",
+      "deselectAll": "Deselect All",
+      "successTitle": "Setup Complete",
+      "successDescription": "Your environment is ready. Click below to get started.",
+      "reEntry": "Environment Setup",
+      "reEntryDescription": "Re-check and install dependency tools"
+    }
   }
 }

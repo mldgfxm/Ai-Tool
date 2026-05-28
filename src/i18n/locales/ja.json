@@ -2685,5 +2685,36 @@
     "expiredHint": "{{tool}}コマンドを実行してログインを更新してください",
     "queryFailed": "クエリに失敗しました",
     "refresh": "更新"
+  },
+  "setup": {
+    "verification": {
+      "title": "認証コードを入力",
+      "description": "認証コードを入力して続行してください",
+      "placeholder": "認証コードを入力",
+      "submit": "認証",
+      "error": "認証コードが正しくありません。再試行してください。"
+    },
+    "wizard": {
+      "title": "環境セットアップ",
+      "stepDependencies": "依存関係",
+      "stepComplete": "セットアップ完了",
+      "next": "次へ",
+      "back": "戻る",
+      "skip": "スキップ",
+      "finish": "始めましょう",
+      "install": "インストール",
+      "installSelected": "選択したものをインストール",
+      "installing": "インストール中...",
+      "installed": "インストール済み",
+      "notInstalled": "未インストール",
+      "version": "バージョン",
+      "checkDependencies": "依存関係を確認中...",
+      "selectAll": "すべて選択",
+      "deselectAll": "すべての選択を解除",
+      "successTitle": "セットアップ完了",
+      "successDescription": "環境の準備が整いました。下のボタンをクリックして始めましょう。",
+      "reEntry": "環境セットアップウィザード",
+      "reEntryDescription": "依存ツールを再検出・インストール"
+    }
   }
 }
