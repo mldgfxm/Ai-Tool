@@ -198,10 +198,7 @@ fn run_cmd(cmd: &str) -> std::io::Result<std::process::Output> {
             .ok()
             .filter(|s| !s.is_empty())
             .unwrap_or_else(|| "/bin/sh".to_string());
-        Command::new(&shell)
-            .arg("-lic")
-            .arg(cmd)
-            .output()
+        Command::new(&shell).arg("-lic").arg(cmd).output()
     }
 }
 
@@ -248,11 +245,16 @@ fn install_single_dep(name: &str) -> Result<(), String> {
 #[cfg(target_os = "macos")]
 fn install_node() -> Result<(), String> {
     // Try brew first
-    if run_cmd("which brew").map(|o| o.status.success()).unwrap_or(false) {
+    if run_cmd("which brew")
+        .map(|o| o.status.success())
+        .unwrap_or(false)
+    {
         run_cmd_blocking("brew install node")?;
     } else {
         // Install brew first, then node
-        run_cmd_blocking(r#"/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)""#)?;
+        run_cmd_blocking(
+            r#"/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)""#,
+        )?;
         run_cmd_blocking("brew install node")?;
     }
     // Set npm registry to official source
@@ -306,13 +308,15 @@ fn install_node() -> Result<(), String> {
 
 #[cfg(target_os = "macos")]
 fn install_git() -> Result<(), String> {
-    if run_cmd("which brew").map(|o| o.status.success()).unwrap_or(false) {
+    if run_cmd("which brew")
+        .map(|o| o.status.success())
+        .unwrap_or(false)
+    {
         run_cmd_blocking("brew install git")
     } else {
         // Git is usually pre-installed on macOS, try xcode-select
-        run_cmd_blocking("xcode-select --install").map_err(|_| {
-            "请先安装 Homebrew 或 Xcode Command Line Tools".to_string()
-        })
+        run_cmd_blocking("xcode-select --install")
+            .map_err(|_| "请先安装 Homebrew 或 Xcode Command Line Tools".to_string())
     }
 }
 
@@ -364,7 +368,10 @@ fn install_claude() -> Result<(), String> {
 
 #[cfg(target_os = "macos")]
 fn install_python() -> Result<(), String> {
-    if run_cmd("which brew").map(|o| o.status.success()).unwrap_or(false) {
+    if run_cmd("which brew")
+        .map(|o| o.status.success())
+        .unwrap_or(false)
+    {
         run_cmd_blocking("brew install python")
     } else {
         Err("请先安装 Homebrew，然后运行: brew install python".to_string())

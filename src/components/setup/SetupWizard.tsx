@@ -5,12 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { setupApi, type DependencyStatus } from "@/lib/api";
 import { toast } from "sonner";
-import {
-  CheckCircle2,
-  Loader2,
-  Package,
-  PartyPopper,
-} from "lucide-react";
+import { CheckCircle2, Loader2, Package, PartyPopper } from "lucide-react";
 
 interface SetupWizardProps {
   onComplete: () => void;
@@ -32,7 +27,7 @@ export function SetupWizard({ onComplete, reEntryMode }: SetupWizardProps) {
       setDeps(result);
       // Auto-select not-installed deps
       const notInstalled = new Set(
-        result.filter((d) => !d.installed).map((d) => d.name)
+        result.filter((d) => !d.installed).map((d) => d.name),
       );
       setSelected(notInstalled);
     } catch (e) {
@@ -149,7 +144,12 @@ export function SetupWizard({ onComplete, reEntryMode }: SetupWizardProps) {
 
       {notInstalledCount > 0 && (
         <div className="flex items-center justify-between">
-          <Button variant="ghost" size="sm" onClick={toggleAll} disabled={installing}>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={toggleAll}
+            disabled={installing}
+          >
             {selected.size === notInstalledCount
               ? t("setup.wizard.deselectAll")
               : t("setup.wizard.selectAll")}
@@ -203,15 +203,11 @@ export function SetupWizard({ onComplete, reEntryMode }: SetupWizardProps) {
             {t("setup.wizard.title")}
           </h1>
           <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
-            <span
-              className={step === 0 ? "text-foreground font-medium" : ""}
-            >
+            <span className={step === 0 ? "text-foreground font-medium" : ""}>
               {t("setup.wizard.stepDependencies")}
             </span>
             <span className="text-muted-foreground/50">&rarr;</span>
-            <span
-              className={step === 1 ? "text-foreground font-medium" : ""}
-            >
+            <span className={step === 1 ? "text-foreground font-medium" : ""}>
               {t("setup.wizard.stepComplete")}
             </span>
           </div>
@@ -253,10 +249,7 @@ export function SetupWizard({ onComplete, reEntryMode }: SetupWizardProps) {
                 >
                   {t("setup.wizard.skip")}
                 </Button>
-                <Button
-                  onClick={() => setStep(1)}
-                  disabled={installing}
-                >
+                <Button onClick={() => setStep(1)} disabled={installing}>
                   {t("setup.wizard.next")}
                 </Button>
               </>
