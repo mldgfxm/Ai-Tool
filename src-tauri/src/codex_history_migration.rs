@@ -147,12 +147,12 @@ fn collect_source_model_provider_ids(db: &Database) -> Result<BTreeSet<String>, 
             continue;
         }
 
-        let is_cc_switch_custom_provider = is_cc_switch_created_custom_provider(provider);
-        if provider.category.as_deref() == Some("custom") && !is_cc_switch_custom_provider {
+        let is_aisnake_custom_provider = is_aisnake_created_custom_provider(provider);
+        if provider.category.as_deref() == Some("custom") && !is_aisnake_custom_provider {
             continue;
         }
 
-        insert_known_cc_switch_legacy_source_id(&mut ids, &provider.id);
+        insert_known_aisnake_legacy_source_id(&mut ids, &provider.id);
 
         let Some(config_text) = provider
             .settings_config
@@ -163,10 +163,10 @@ fn collect_source_model_provider_ids(db: &Database) -> Result<BTreeSet<String>, 
         };
 
         if let Some(provider_id) = stable_codex_model_provider_id_from_config(config_text) {
-            if is_cc_switch_custom_provider {
+            if is_aisnake_custom_provider {
                 insert_migratable_source_id(&mut ids, &provider_id);
             } else {
-                insert_known_cc_switch_legacy_source_id(&mut ids, &provider_id);
+                insert_known_aisnake_legacy_source_id(&mut ids, &provider_id);
             }
         }
         if let Some(provider_id) =
@@ -179,7 +179,7 @@ fn collect_source_model_provider_ids(db: &Database) -> Result<BTreeSet<String>, 
     Ok(ids)
 }
 
-fn is_cc_switch_created_custom_provider(provider: &crate::provider::Provider) -> bool {
+fn is_aisnake_created_custom_provider(provider: &crate::provider::Provider) -> bool {
     provider.category.as_deref() == Some("custom")
         && provider.created_at.is_some()
         && provider.id != "default"
@@ -206,14 +206,14 @@ fn migration_backup_root() -> PathBuf {
         .join(Local::now().format("%Y%m%d_%H%M%S").to_string())
 }
 
-fn insert_known_cc_switch_legacy_source_id(ids: &mut BTreeSet<String>, provider_id: &str) {
+fn insert_known_aisnake_legacy_source_id(ids: &mut BTreeSet<String>, provider_id: &str) {
     let trimmed = provider_id.trim();
-    if is_known_cc_switch_legacy_codex_model_provider_id(trimmed) {
+    if is_known_aisnake_legacy_codex_model_provider_id(trimmed) {
         insert_migratable_source_id(ids, trimmed);
     }
 }
 
-fn is_known_cc_switch_legacy_codex_model_provider_id(provider_id: &str) -> bool {
+fn is_known_aisnake_legacy_codex_model_provider_id(provider_id: &str) -> bool {
     CC_SWITCH_LEGACY_CODEX_MODEL_PROVIDER_IDS
         .iter()
         .any(|known| known.eq_ignore_ascii_case(provider_id))
@@ -242,7 +242,7 @@ fn legacy_codex_model_provider_id_from_normalized_config(config_text: &str) -> O
 }
 
 fn normalized_legacy_codex_provider_name(name: &str) -> Option<&'static str> {
-    if is_known_cc_switch_legacy_codex_model_provider_id(name) {
+    if is_known_aisnake_legacy_codex_model_provider_id(name) {
         return CC_SWITCH_LEGACY_CODEX_MODEL_PROVIDER_IDS
             .iter()
             .copied()
@@ -799,7 +799,7 @@ mod tests {
     }
 
     #[test]
-    fn collects_custom_category_provider_when_created_by_cc_switch() {
+    fn collects_custom_category_provider_when_created_by_aisnake() {
         let db = Database::memory().expect("memory db");
         let mut provider = Provider::with_id(
             "generated-uuid".to_string(),

@@ -11,7 +11,7 @@ use std::process::Command;
 use toml_edit::DocumentMut;
 
 pub const CC_SWITCH_CODEX_MODEL_PROVIDER_ID: &str = "custom";
-pub const CC_SWITCH_CODEX_MODEL_CATALOG_FILENAME: &str = "cc-switch-model-catalog.json";
+pub const CC_SWITCH_CODEX_MODEL_CATALOG_FILENAME: &str = "aisnake-model-catalog.json";
 const CODEX_MODEL_CATALOG_TEMPLATE_SLUG: &str = "gpt-5.5";
 
 /// Reserved built-in provider IDs from OpenAI Codex's config/model-provider
@@ -284,11 +284,11 @@ fn rewrite_codex_profile_model_provider_refs(
     }
 }
 
-/// Keep Codex's active `model_provider` stable across CC Switch provider changes.
+/// Keep Codex's active `model_provider` stable across AIsnake provider changes.
 ///
 /// Codex stores and filters resume history by `model_provider`, so switching between
 /// provider-specific ids like `rightcode` and `aihubmix` makes history appear to move.
-/// CC Switch-managed third-party providers share one stable bucket while official
+/// AIsnake-managed third-party providers share one stable bucket while official
 /// built-in providers such as `openai` keep their original identity.
 pub fn normalize_codex_settings_config_model_provider(
     settings: &mut Value,
@@ -753,13 +753,13 @@ pub fn prepare_codex_config_text_with_model_catalog(
 }
 
 /// Reverse of `prepare_codex_config_text_with_model_catalog`: read the
-/// cc-switch–maintained catalog file referenced by `~/.codex/config.toml` and
+/// aisnake–maintained catalog file referenced by `~/.codex/config.toml` and
 /// convert it back into the simplified shape the frontend table uses:
 /// `{ "models": [{ "model", "displayName"?, "contextWindow"? }, ...] }`.
 ///
 /// We only reverse-parse catalogs whose `model_catalog_json` path is the
-/// cc-switch–generated file (identified by filename
-/// `cc-switch-model-catalog.json`). A user-managed external catalog file is
+/// aisnake–generated file (identified by filename
+/// `aisnake-model-catalog.json`). A user-managed external catalog file is
 /// left alone — surfacing its richer structure as the simplified table would
 /// be a downgrade we can't safely round-trip.
 ///
@@ -778,7 +778,7 @@ pub fn prepare_codex_config_text_with_model_catalog(
 pub fn read_codex_model_catalog_simplified_from_live() -> Result<Option<Value>, AppError> {
     let config_text = read_codex_config_text()?;
     let generated_path = get_codex_model_catalog_path();
-    let Some(catalog_path) = resolve_cc_switch_catalog_path(&config_text, &generated_path) else {
+    let Some(catalog_path) = resolve_aisnake_catalog_path(&config_text, &generated_path) else {
         return Ok(None);
     };
     if !catalog_path.exists() {
@@ -793,10 +793,10 @@ pub fn read_codex_model_catalog_simplified_from_live() -> Result<Option<Value>, 
     ))
 }
 
-/// Given `config.toml` text, resolve the on-disk path of the cc-switch–owned
+/// Given `config.toml` text, resolve the on-disk path of the aisnake–owned
 /// catalog file (returns `None` if `model_catalog_json` is absent or points at
 /// a file we don't own). Relative paths fall back to `generated_path`.
-fn resolve_cc_switch_catalog_path(config_text: &str, generated_path: &Path) -> Option<PathBuf> {
+fn resolve_aisnake_catalog_path(config_text: &str, generated_path: &Path) -> Option<PathBuf> {
     if config_text.trim().is_empty() {
         return None;
     }
@@ -808,10 +808,10 @@ fn resolve_cc_switch_catalog_path(config_text: &str, generated_path: &Path) -> O
         .filter(|s| !s.is_empty())?;
 
     let referenced_path = Path::new(catalog_path_str);
-    let is_cc_switch_owned = catalog_path_str == generated_path.to_string_lossy().as_ref()
+    let is_aisnake_owned = catalog_path_str == generated_path.to_string_lossy().as_ref()
         || referenced_path.file_name().and_then(|name| name.to_str())
             == Some(CC_SWITCH_CODEX_MODEL_CATALOG_FILENAME);
-    if !is_cc_switch_owned {
+    if !is_aisnake_owned {
         return None;
     }
 
@@ -1883,7 +1883,7 @@ base_url = "https://production.api/v1"
 [model_providers.any]
 name = "any"
 "#;
-        let catalog_path = Path::new("/tmp/cc-switch-model-catalog.json");
+        let catalog_path = Path::new("/tmp/aisnake-model-catalog.json");
 
         let result = set_codex_model_catalog_json_field(input, Some(catalog_path)).unwrap();
         let parsed: toml::Value = toml::from_str(&result).unwrap();
@@ -1891,7 +1891,7 @@ name = "any"
             parsed
                 .get("model_catalog_json")
                 .and_then(|value| value.as_str()),
-            Some("/tmp/cc-switch-model-catalog.json")
+            Some("/tmp/aisnake-model-catalog.json")
         );
         assert!(
             parsed
@@ -1905,30 +1905,30 @@ name = "any"
 
     #[test]
     fn resolve_catalog_path_returns_none_when_config_missing_field() {
-        let generated = PathBuf::from("/tmp/.codex/cc-switch-model-catalog.json");
-        assert!(resolve_cc_switch_catalog_path("", &generated).is_none());
+        let generated = PathBuf::from("/tmp/.codex/aisnake-model-catalog.json");
+        assert!(resolve_aisnake_catalog_path("", &generated).is_none());
         assert!(
-            resolve_cc_switch_catalog_path("model = \"gpt-5\"", &generated).is_none(),
+            resolve_aisnake_catalog_path("model = \"gpt-5\"", &generated).is_none(),
             "no model_catalog_json field should yield None"
         );
     }
 
     #[test]
-    fn resolve_catalog_path_accepts_cc_switch_owned_file() {
-        let generated = PathBuf::from("/tmp/.codex/cc-switch-model-catalog.json");
-        let config = r#"model_catalog_json = "/tmp/.codex/cc-switch-model-catalog.json"
+    fn resolve_catalog_path_accepts_aisnake_owned_file() {
+        let generated = PathBuf::from("/tmp/.codex/aisnake-model-catalog.json");
+        let config = r#"model_catalog_json = "/tmp/.codex/aisnake-model-catalog.json"
 "#;
-        let resolved = resolve_cc_switch_catalog_path(config, &generated).expect("path resolves");
+        let resolved = resolve_aisnake_catalog_path(config, &generated).expect("path resolves");
         assert_eq!(resolved, generated);
     }
 
     #[test]
     fn resolve_catalog_path_rejects_user_owned_external_file() {
-        let generated = PathBuf::from("/tmp/.codex/cc-switch-model-catalog.json");
+        let generated = PathBuf::from("/tmp/.codex/aisnake-model-catalog.json");
         let config = r#"model_catalog_json = "/Users/me/.codex/my-handwritten-catalog.json"
 "#;
         assert!(
-            resolve_cc_switch_catalog_path(config, &generated).is_none(),
+            resolve_aisnake_catalog_path(config, &generated).is_none(),
             "external catalog files should be left alone"
         );
     }

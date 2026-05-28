@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "CC Switch",
+  "productName": "AIsnake",
   "version": "1.0.0",
-  "identifier": "com.ccswitch.desktop",
+  "identifier": "com.aisnake.desktop",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:3000",
@@ -59,13 +59,13 @@
   "plugins": {
     "deep-link": {
       "desktop": {
-        "schemes": ["ccswitch"]
+        "schemes": ["aisnake"]
       }
     },
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEU2MEU5QTlGMDYxNThERTMKUldUampSVUduNW9PNXNpQnB4MGRHQzNpVW5BUmVXaGhlOVZ1OXgrcXkrVTdrZWZ5VDFxTTBNa2oK",
       "endpoints": [
-        "https://github.com/mldgfxm/cc-switch-main/releases/latest/download/latest.json"
+        "https://github.com/mldgfxm/aisnake-main/releases/latest/download/latest.json"
       ]
     }
   }
