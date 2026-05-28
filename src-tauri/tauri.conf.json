@@ -64,7 +64,7 @@
       }
     },
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDVDNDZFQ0YxM0Q4REU1QUMKUldTczVZMDk4ZXhHWEhpOVVQUUFyWDM1aEdSckNHRU5jcHR1SVlqRFVsOFpiNk9vTlRMUVc4TzAK",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEU2MEU5QTlGMDYxNThERTMKUldUampSVUduNW9PNXNpQnB4MGRHQzNpVW5BUmVXaGhlOVZ1OXgrcXkrVTdrZWZ5VDFxTTBNa2oK",
       "endpoints": [
         "https://github.com/mldgfxm/cc-switch-main/releases/latest/download/latest.json"
       ]
